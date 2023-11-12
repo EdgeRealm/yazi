@@ -1,0 +1,8 @@
+[workspace]
+resolver = "2"
+members  = [ "yazi-*" ]
+
+[profile.release]
+lto   = true
+strip = true
+panic = "abort"
