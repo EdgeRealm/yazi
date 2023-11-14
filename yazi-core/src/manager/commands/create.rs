@@ -1,6 +1,6 @@
-use std::path::PathBuf;
+use std::path::{PathBuf, MAIN_SEPARATOR};
 
-use tokio::fs::{self};
+use tokio::fs;
 use yazi_config::keymap::Exec;
 use yazi_shared::Url;
 
@@ -32,7 +32,7 @@ impl Manager {
 				}
 			}
 
-			if name.ends_with('/') {
+			if name.ends_with(MAIN_SEPARATOR) {
 				fs::create_dir_all(&path).await?;
 			} else {
 				fs::create_dir_all(&path.parent().unwrap()).await.ok();
