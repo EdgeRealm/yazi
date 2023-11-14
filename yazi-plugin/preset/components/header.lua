@@ -129,7 +129,7 @@ function Header:render(area)
 		:split(area)
 
 	local left = ui.Line { self:cwd() }
-	local right = ui.Line { self:permissions(), self:percentage(), self:position(), self.tabs()}
+	local right = ui.Line { self:permissions(), self:percentage(), self:position()}
     local progress = self:progress(area, right:width())
 	return {
 		ui.Paragraph(chunks[1], { left }),
