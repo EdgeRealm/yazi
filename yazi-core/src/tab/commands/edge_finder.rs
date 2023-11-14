@@ -47,8 +47,11 @@ impl Tab {
         if opt.type_ == OptType::RevealFinder {
             let child = Command::new("osascript").arg("/Users/edge/EdgeDocuments/EdgeGadgets/Apps/yazi/yazi-plugin/edgeplug/edgeRevealFinder.scpt").output().expect("");
             let selected = String::from_utf8_lossy(&child.stdout).trim().to_string();
+            if selected.is_empty() {
+                return false
+            }
+
             let selected_list: Vec<String> = selected.split(", ").map(|s| s.to_string()).collect();
-    
             let mut pb = PathBuf::new();
             pb.push(&selected_list[0]); // root
             let yzfile = Url::from(pb.parent().unwrap());
