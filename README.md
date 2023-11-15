@@ -1,3 +1,22 @@
+## Edge Adapted
+- ui
+    - yazi-fm/src/root.rs
+        - remove components::status
+    - yazi-plugin/preset/header.lua
+        - add permission, percentage, position & progress
+- custom commands
+    - change entry
+        - yazi-fm/src/executor.rs
+            - "jump": add fzf-marks
+            - "edge_finder": reveal_finder & from_finder_window
+    - yazi-core/src/fzf.rs
+        - add fzf_marks
+    - yazi-core/src/tab/commands/reveal_finder.rs
+        - add from_reveal_finder
+        - add from_finder_window
+    - yazi-core/src/manager/commands/rename.rs
+        - bulk_rename: opener mime to "bulk_rename"
+
 ## Yazi - ⚡️ Blazing Fast Terminal File Manager
 
 Yazi ("duck" in Chinese) is a terminal file manager written in Rust, based on non-blocking async I/O. It aims to provide an efficient, user-friendly, and customizable file management experience.
@@ -56,24 +75,6 @@ Here is a guide for tmux users: [Image preview within tmux](https://github.com/s
 
 See [Feature requests](https://github.com/sxyazi/yazi/issues/51) for more details.
 
-## Edge Adapted
-- ui
-    - yazi-fm/src/root.rs
-        - remove components::status
-    - yazi-plugin/preset/header.lua
-        - add permission, percentage, position & progress
-- custom commands
-    - change entry
-        - yazi-fm/src/executor.rs
-            - "jump": add fzf-marks
-            - "edge_finder": reveal_finder & from_finder_window
-    - yazi-core/src/fzf.rs
-        - add fzf_marks
-    - yazi-core/src/tab/commands/reveal_finder.rs
-        - add from_reveal_finder
-        - add from_finder_window
-    - yazi-core/src/manager/commands/rename.rs
-        - bulk_rename: opener mime to "bulk_rename"
 
 ## License
 
