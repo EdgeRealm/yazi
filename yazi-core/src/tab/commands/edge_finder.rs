@@ -1,5 +1,5 @@
 use std::process::Command;
-use yazi_shared::{Url, expand_url};
+use yazi_shared::{Url, expand_path};
 use std::path::PathBuf;
 use yazi_config::keymap::Exec;
 
@@ -54,15 +54,15 @@ impl Tab {
             let selected_list: Vec<String> = selected.split(", ").map(|s| s.to_string()).collect();
             let mut pb = PathBuf::new();
             pb.push(&selected_list[0]); // root
-            let yzfile = Url::from(pb.parent().unwrap());
-            self.cd(expand_url(yzfile));
+            // let yzfile = Url::from(pb.parent().unwrap());
+            self.cd(Url::from(expand_path(pb)));
 
     
             for file in selected_list.clone() {
                 let mut pb = PathBuf::new();
                 pb.push(file);
-                let yzfile = Url::from(pb);
-                self.current.files.select(&expand_url(yzfile), opt.state);
+                // let yzfile = Url::from(pb);
+                self.current.files.select(&Url::from(expand_path(pb)), opt.state);
             }
             true
         } else {
@@ -74,20 +74,20 @@ impl Tab {
         
             let mut pb = PathBuf::new();
             pb.push(&selected_list[0]); // root
-            let yzfile = Url::from(pb);
-            self.cd(expand_url(yzfile));
+            // let yzfile = Url::from(pb);
+            self.cd(Url::from(expand_path(pb)));
             // let mut pb = PathBuf::new();
             // pb.push(&selected_list[0]); // root
             // let yzfile = Url::from(pb);
             // futures::executor::block_on(
-            //     self.cd(expand_url(yzfile))
+            //     self.cd(Url::from(expand_path(pb)))
             // );
         
             for file in selected_list.clone() {
                 let mut pb = PathBuf::new();
                 pb.push(file);
-                let yzfile = Url::from(pb);
-                self.current.files.select(&expand_url(yzfile), opt.state);
+                // let yzfile = Url::from(pb);
+                self.current.files.select(&Url::from(expand_path(pb)), opt.state);
             }
         
             true        
