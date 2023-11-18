@@ -4,11 +4,14 @@
         - remove components::status
     - yazi-plugin/preset/header.lua
         - add permission, percentage, position & progress
+    - yazi-fm/src/select/select.rs
+        - change Select widget item precede icon to 󰄾
 - custom commands
     - change entry
         - yazi-fm/src/executor.rs
             - "jump": add fzf-marks
             - "edge_finder": reveal_finder & from_finder_window
+            - "followsymlink": cd original file of the symlink
     - yazi-core/src/fzf.rs
         - add fzf_marks
     - yazi-core/src/tab/commands/reveal_finder.rs
@@ -21,8 +24,8 @@
         - change mime of opener of bulkrename to "bulkrename"
     - yazi.toml
         - add bulk_rename mime to be : code $@ -w (don't quite know why this, other than code $@, fix the bug)
-    - i/o
-        - added copy & paste between different sessions
+- i/o
+    - added copy & paste between different sessions
 
 ## Yazi - ⚡️ Blazing Fast Terminal File Manager
 
