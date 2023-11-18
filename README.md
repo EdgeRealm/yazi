@@ -19,6 +19,8 @@
         - add from_finder_window
     - yazi-core/src/manager/commands/rename.rs
         - bulk_rename: opener mime to "bulk_rename"
+    - /yazi-core/src/input/commands/type_.rs
+        - Kill forwards to the end of the current word: change hotkey to delete
 - bug (?)
     - yazi-core/src/manager/commands/rename.rs
         - change mime of opener of bulkrename to "bulkrename"
