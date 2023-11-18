@@ -94,7 +94,7 @@ impl Input {
 			return self.type_str(c.encode_utf8(&mut bits));
 		}
 
-		use KeyCode::{Backspace, Char as C};
+		use KeyCode::{Backspace, Delete, Char as C};
 
 		match key {
 			// Move to the start of the line
@@ -150,7 +150,7 @@ impl Input {
 				self.delete_range(start..end)
 			}
 			// Kill forwards to the end of the current word
-			Key { code: C('d'), shift: false, ctrl: false, alt: true } => {
+			Key { code: Delete, shift: false, ctrl: false, alt: true } => {
 				let snap = self.snap_mut();
 				let start = snap.idx(snap.cursor).unwrap_or(snap.len());
 				let end = start + Self::find_word_boundary(snap.value[start..].chars());
