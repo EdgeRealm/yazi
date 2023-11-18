@@ -1,13 +1,12 @@
 use std::ops::Range;
 
-use crossterm::event::KeyCode;
 use tokio::sync::mpsc::UnboundedSender;
 use unicode_width::UnicodeWidthStr;
-use yazi_config::keymap::Key;
+use yazi_config::{popup::{InputOpt, Position}, INPUT};
 use yazi_shared::InputError;
 
-use super::{mode::InputMode, op::InputOp, InputOpt, InputSnap, InputSnaps};
-use crate::{external, Position};
+use super::{mode::InputMode, op::InputOp, InputSnap, InputSnaps};
+use crate::external;
 
 #[derive(Default)]
 pub struct Input {
@@ -30,9 +29,7 @@ pub struct Input {
 impl Input {
 	pub fn show(&mut self, opt: InputOpt, tx: UnboundedSender<Result<String, InputError>>) {
 		self.close(false);
-		self.snaps.reset(opt.value);
 		self.visible = true;
-
 		self.title = opt.title;
 		self.position = opt.position;
 
@@ -43,22 +40,14 @@ impl Input {
 
 		// Shell
 		self.highlight = opt.highlight;
+
+		// Reset snaps
+		self.snaps.reset(opt.value, self.limit());
 	}
 
-	pub fn type_(&mut self, key: &Key) -> bool {
-		if self.mode() != InputMode::Insert {
-			return false;
-		}
-
-		if let Some(c) = key.plain() {
-			let mut bits = [0; 4];
-			return self.type_str(c.encode_utf8(&mut bits));
-		}
-
-		match key {
-			Key { code: KeyCode::Backspace, shift: false, ctrl: false, alt: false } => self.backspace(),
-			_ => false,
-		}
+	#[inline]
+	pub(super) fn limit(&self) -> usize {
+		self.position.offset.width.saturating_sub(INPUT.border()) as usize
 	}
 
 	pub fn type_str(&mut self, s: &str) -> bool {
@@ -70,19 +59,6 @@ impl Input {
 		}
 
 		self.move_(s.chars().count() as isize);
-		self.flush_value();
-		true
-	}
-
-	pub fn backspace(&mut self) -> bool {
-		let snap = self.snaps.current_mut();
-		if snap.cursor < 1 {
-			return false;
-		} else {
-			snap.value.remove(snap.idx(snap.cursor - 1).unwrap());
-		}
-
-		self.move_(-1);
 		self.flush_value();
 		true
 	}
@@ -123,7 +99,7 @@ impl Input {
 			return false;
 		}
 		if !matches!(old.op, InputOp::None | InputOp::Select(_)) {
-			self.snaps.tag().then(|| self.flush_value());
+			self.snaps.tag(self.limit()).then(|| self.flush_value());
 		}
 		true
 	}
@@ -146,7 +122,7 @@ impl Input {
 
 impl Input {
 	#[inline]
-	pub fn value(&self) -> &str { self.snap().slice(self.snap().window()) }
+	pub fn value(&self) -> &str { self.snap().slice(self.snap().window(self.limit())) }
 
 	#[inline]
 	pub fn mode(&self) -> InputMode { self.snap().mode }
@@ -164,7 +140,7 @@ impl Input {
 		let (start, end) =
 			if start < snap.cursor { (start, snap.cursor) } else { (snap.cursor + 1, start + 1) };
 
-		let win = snap.window();
+		let win = snap.window(self.limit());
 		let Range { start, end } = start.max(win.start)..end.min(win.end);
 
 		let s = snap.slice(snap.offset..start).width() as u16;

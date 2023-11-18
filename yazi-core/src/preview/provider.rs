@@ -42,13 +42,13 @@ impl Provider {
 	}
 
 	pub(super) async fn image(path: &Path) -> Result<PreviewData, PeekError> {
-		ADAPTOR.image_show(path, MANAGER.layout.preview_rect()).await?;
+		ADAPTOR.image_show(path, MANAGER.layout.image_rect()).await?;
 		Ok(PreviewData::Image)
 	}
 
 	pub(super) async fn video(path: &Path, skip: usize) -> Result<PreviewData, PeekError> {
 		let cache = PREVIEW.cache(path, skip);
-		if fs::metadata(&cache).await.is_err() {
+		if fs::symlink_metadata(&cache).await.is_err() {
 			external::ffmpegthumbnailer(path, &cache, skip).await?;
 		}
 
@@ -57,7 +57,7 @@ impl Provider {
 
 	pub(super) async fn pdf(path: &Path, skip: usize) -> Result<PreviewData, PeekError> {
 		let cache = PREVIEW.cache(path, skip);
-		if fs::metadata(&cache).await.is_err() {
+		if fs::symlink_metadata(&cache).await.is_err() {
 			external::pdftoppm(path, &cache, skip).await?;
 		}
 
