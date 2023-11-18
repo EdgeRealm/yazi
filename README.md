@@ -16,6 +16,13 @@
         - add from_finder_window
     - yazi-core/src/manager/commands/rename.rs
         - bulk_rename: opener mime to "bulk_rename"
+- bug (?)
+    - yazi-core/src/manager/commands/rename.rs
+        - change mime of opener of bulkrename to "bulkrename"
+    - yazi.toml
+        - add bulk_rename mime to be : code $@ -w (don't quite know why this, other than code $@, fix the bug)
+    - i/o
+        - added copy & paste between different sessions
 
 ## Yazi - ⚡️ Blazing Fast Terminal File Manager
 
