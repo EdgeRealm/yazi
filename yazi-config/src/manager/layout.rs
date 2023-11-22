@@ -47,7 +47,7 @@ impl ManagerLayout {
 			x:      left.saturating_add(columns - w),
 			y:      top,
 			width:  w.saturating_sub(left + right),
-			height: rows.saturating_sub(top + bottom),
+			height: rows.saturating_sub(top + bottom)+1,
 		}
 	}
 
@@ -70,7 +70,7 @@ impl ManagerLayout {
 		let WindowSize { columns, rows, .. } = Term::size();
 
 		let offset = THEME.manager.folder_offset;
-		Block::default().padding(Padding::new(offset.3, offset.1, offset.0, offset.2)).inner(Rect {
+		Block::default().padding(Padding::new(offset.3, offset.1, offset.0, offset.1)).inner(Rect {
 			x:      columns * self.parent / self.all,
 			y:      0,
 			width:  columns * self.current / self.all,
