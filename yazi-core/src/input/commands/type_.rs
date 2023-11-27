@@ -150,7 +150,13 @@ impl Input {
 				self.delete_range(start..end)
 			}
 			// Kill forwards to the end of the current word
-			Key { code: Delete, shift: false, ctrl: false, alt: true } => {
+			// Key { code: Delete, shift: false, ctrl: false, alt: true } => {
+			// 	let snap = self.snap_mut();
+			// 	let start = snap.idx(snap.cursor).unwrap_or(snap.len());
+			// 	let end = start + Self::find_word_boundary(snap.value[start..].chars());
+			// 	self.delete_range(start..end)
+			// }
+			Key { code: C('d'), shift: false, ctrl: false, alt: true } => {
 				let snap = self.snap_mut();
 				let start = snap.idx(snap.cursor).unwrap_or(snap.len());
 				let end = start + Self::find_word_boundary(snap.value[start..].chars());
